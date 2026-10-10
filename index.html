@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classical Cryptography Toolkit | Interactive Web Suite</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- NAVIGATION BAR -->
+    <header class="app-navbar">
+      <a href="#" class="brand-logo">
+        <div class="logo-icon"><i class="fas fa-key"></i></div>
+        <div>
+          <h1 class="brand-title">CRYPTOGRAPHY TOOLKIT</h1>
+          <span class="brand-subtitle">Classical Encryption Suite</span>
+        </div>
+      </a>
+
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="playground-view">
+          <i class="fas fa-sliders-h"></i> Playground
+        </button>
+        <button class="nav-tab" data-tab="visualizer-view">
+          <i class="fas fa-network-wired"></i> Visualizers
+        </button>
+        <button class="nav-tab" data-tab="compare-view">
+          <i class="fas fa-chart-bar"></i> Benchmark
+        </button>
+        <button class="nav-tab" data-tab="file-view">
+          <i class="fas fa-file-shield"></i> File Crypt
+        </button>
+        <button class="nav-tab" data-tab="theory-view">
+          <i class="fas fa-book-open"></i> Theory Hub
+        </button>
+        <button class="nav-tab" data-tab="report-view">
+          <i class="fas fa-file-alt"></i> Project Report
+        </button>
+      </nav>
+    </header>
+
+    <!-- MAIN CONTENT VIEWS -->
+    <main class="app-main">
+
+      <!-- ========================================== -->
+      <!-- VIEW 1: CIPHER PLAYGROUND -->
+      <!-- ========================================== -->
+      <section id="playground-view" class="view-panel active">
+        <div class="playground-grid">
+
+          <!-- Left Controls Column -->
+          <div class="cyber-card">
+            <div class="card-header">
+              <h2 class="card-title"><i class="fas fa-shield-alt"></i> Cipher Configuration</h2>
+              <span id="cipher-category-badge" class="preset-pill" style="color:var(--accent-cyan);">Substitution</span>
+            </div>
+
+            <!-- Algorithm Selection -->
+            <div class="form-group">
+              <label for="cipher-select" class="form-label">Select Classical Algorithm</label>
+              <select id="cipher-select" class="form-select">
+                <optgroup label="SUBSTITUTION CIPHERS">
+                  <option value="caesar" selected>1. Caesar Cipher</option>
+                  <option value="mono">2. Monoalphabetic Cipher</option>
+                  <option value="playfair">3. Playfair Cipher</option>
+                  <option value="hill">4. Hill Cipher (2x2 Matrix)</option>
+                  <option value="vigenere">5. Vigenère Cipher</option>
+                  <option value="otp">6. One-Time Pad</option>
+                </optgroup>
+                <optgroup label="TRANSPOSITION CIPHERS">
+                  <option value="railfence">7. Rail Fence Cipher</option>
+                  <option value="columnar">8. Columnar Transposition</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <!-- Dynamic Key Input -->
+            <div class="form-group">
+              <label for="key-input" id="key-input-label" class="form-label">Enter Key (Shift Value)</label>
+              <div class="key-input-row">
+                <input type="text" id="key-input" class="form-input" value="5" placeholder="e.g. 5">
+                <button id="btn-gen-key" class="btn-action" title="Generate Random Key">
+                  <i class="fas fa-random"></i> Auto Key
+                </button>
+              </div>
+              <small id="key-help-text" class="text-dim" style="font-size:11px; margin-top:4px; display:block;">
+                Shift value must be an integer (e.g. 1-25).
+              </small>
+            </div>
+
+            <!-- Input Plaintext -->
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <label for="plaintext-input" class="form-label" style="margin:0;">Input Text</label>
+                <span id="char-count-badge" class="text-dim" style="font-size:11px;">16 Chars</span>
+              </div>
+              <textarea id="plaintext-input" class="form-textarea" placeholder="Enter plaintext to encrypt or ciphertext to decrypt...">NETWORK SECURITY</textarea>
+
+              <!-- Presets -->
+              <div style="margin-top:10px;">
+                <span class="form-label" style="font-size:10px; margin-bottom:4px;">Sample Presets:</span>
+                <div class="presets-list">
+                  <button class="preset-pill" data-preset="NETWORK SECURITY">NETWORK SECURITY</button>
+                  <button class="preset-pill" data-preset="CLASSICAL CRYPTOGRAPHY">CLASSICAL CRYPTOGRAPHY</button>
+                  <button class="preset-pill" data-preset="ATTACK AT DAWN">ATTACK AT DAWN</button>
+                  <button class="preset-pill" data-preset="INFORMATION SECURITY">INFORMATION SECURITY</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display:flex; gap:12px; margin-top:24px;">
+              <button id="btn-encrypt" class="btn-action btn-primary" style="flex:1;">
+                <i class="fas fa-lock"></i> Encrypt
+              </button>
+              <button id="btn-decrypt" class="btn-action btn-purple" style="flex:1;">
+                <i class="fas fa-unlock-alt"></i> Decrypt
+              </button>
+              <button id="btn-clear" class="btn-action" title="Clear Inputs">
+                <i class="fas fa-eraser"></i>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Right Output & Metrics Column -->
+          <div class="cyber-card">
+            <div class="card-header">
+              <h2 class="card-title"><i class="fas fa-terminal"></i> Encryption Results</h2>
+              <span id="status-indicator" style="font-size:12px; color:var(--accent-emerald); font-weight:600;">
+                <i class="fas fa-check-circle"></i> Ready
+              </span>
+            </div>
+
+            <!-- Ciphertext Output Box -->
+            <div class="output-box">
+              <div class="output-header">
+                <span class="output-title">Encrypted Ciphertext</span>
+                <button class="btn-action btn-copy" data-target="ciphertext-output" style="padding:4px 10px; font-size:11px;">
+                  <i class="fas fa-copy"></i> Copy
+                </button>
+              </div>
+              <div id="ciphertext-output" class="output-text">SJYBTWP XJHZWNYD</div>
+            </div>
+
+            <!-- Decrypted Text Output Box -->
+            <div class="output-box">
+              <div class="output-header">
+                <span class="output-title" style="color:var(--accent-emerald);">Decrypted Plaintext</span>
+                <button class="btn-action btn-copy" data-target="decrypted-output" style="padding:4px 10px; font-size:11px;">
+                  <i class="fas fa-copy"></i> Copy
+                </button>
+              </div>
+              <div id="decrypted-output" class="output-text decrypted">NETWORK SECURITY</div>
+            </div>
+
+            <!-- Performance Metrics Bar -->
+            <div class="metrics-bar">
+              <div class="metric-item">
+                <span class="metric-label">Execution Time</span>
+                <span id="metric-exec-time" class="metric-value">0.082 ms</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Shannon Entropy</span>
+                <span id="metric-entropy" class="metric-value">3.51 bits/char</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Key Status</span>
+                <span id="metric-key-status" class="metric-value" style="color:var(--accent-emerald);">Valid</span>
+              </div>
+            </div>
+
+            <!-- Inline Mini Visualizer -->
+            <div id="playground-mini-vis">
+              <!-- Rendered via JS -->
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- ========================================== -->
+      <!-- VIEW 2: INTERACTIVE VISUALIZERS -->
+      <!-- ========================================== -->
+      <section id="visualizer-view" class="view-panel">
+        <div class="cyber-card">
+          <div class="card-header">
+            <h2 class="card-title"><i class="fas fa-network-wired"></i> Step-by-Step Structural Visualizers</h2>
+            <span class="text-dim" style="font-size:12px;">Interactive Matrix & Grid Renderers</span>
+          </div>
+
+          <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:20px;">
+            <button class="btn-action vis-tab-btn active" data-vis="playfair">Playfair 5x5 Matrix</button>
+            <button class="btn-action vis-tab-btn" data-vis="hill">Hill 2x2 Matrix & Det</button>
+            <button class="btn-action vis-tab-btn" data-vis="railfence">Rail Fence Zigzag</button>
+            <button class="btn-action vis-tab-btn" data-vis="columnar">Columnar Transposition</button>
+            <button class="btn-action vis-tab-btn" data-vis="vigenere">Vigenère Keystream</button>
+          </div>
+
+          <div id="visualizer-main-container">
+            <!-- Rendered by visualizers.js -->
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ========================================== -->
+      <!-- VIEW 3: ALGORITHM COMPARISON & BENCHMARK -->
+      <!-- ========================================== -->
+      <section id="compare-view" class="view-panel">
+        <div class="cyber-card">
+          <div class="card-header">
+            <h2 class="card-title"><i class="fas fa-chart-bar"></i> Algorithm Performance Benchmark</h2>
+            <button id="btn-run-benchmark" class="btn-action btn-primary">
+              <i class="fas fa-play"></i> Run Benchmark Suite
+            </button>
+          </div>
+
+          <p class="text-muted" style="font-size:13px; margin-bottom:20px;">
+            Simultaneously evaluates all 8 classical ciphers on high-precision execution speed (ms), character throughput, ciphertext entropy, and performance efficiency.
+          </p>
+
+          <div style="overflow-x:auto;">
+            <table class="benchmark-table">
+              <thead>
+                <tr>
+                  <th>Algorithm</th>
+                  <th>Category</th>
+                  <th>Enc Time (ms)</th>
+                  <th>Dec Time (ms)</th>
+                  <th>Entropy (bits)</th>
+                  <th>Speed Performance</th>
+                </tr>
+              </thead>
+              <tbody id="benchmark-results-body">
+                <!-- Populated dynamically via benchmarks.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ========================================== -->
+      <!-- VIEW 4: FILE ENCRYPTION / DECRYPTION -->
+      <!-- ========================================== -->
+      <section id="file-view" class="view-panel">
+        <div class="cyber-card">
+          <div class="card-header">
+            <h2 class="card-title"><i class="fas fa-file-shield"></i> Text File Encryption & Decryption</h2>
+            <span class="text-dim" style="font-size:12px;">Supports .txt files</span>
+          </div>
+
+          <div class="playground-grid">
+            <div>
+              <div class="form-group">
+                <label for="file-upload-input" class="form-label">Upload Text File (.txt)</label>
+                <input type="file" id="file-upload-input" accept=".txt" class="form-input">
+              </div>
+
+              <div class="form-group">
+                <label for="file-cipher-select" class="form-label">Select Cipher Algorithm</label>
+                <select id="file-cipher-select" class="form-select">
+                  <option value="caesar">Caesar Cipher</option>
+                  <option value="mono">Monoalphabetic Cipher</option>
+                  <option value="playfair">Playfair Cipher</option>
+                  <option value="hill">Hill Cipher (2x2)</option>
+                  <option value="vigenere">Vigenère Cipher</option>
+                  <option value="railfence">Rail Fence Cipher</option>
+                  <option value="columnar">Columnar Transposition</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="file-key-input" class="form-label">Encryption Key</label>
+                <input type="text" id="file-key-input" class="form-input" value="5" placeholder="Enter key">
+              </div>
+
+              <div style="display:flex; gap:12px;">
+                <button id="btn-file-encrypt" class="btn-action btn-primary" style="flex:1;">
+                  <i class="fas fa-lock"></i> Encrypt File
+                </button>
+                <button id="btn-file-decrypt" class="btn-action btn-purple" style="flex:1;">
+                  <i class="fas fa-unlock-alt"></i> Decrypt File
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <div class="output-box">
+                <div class="output-header">
+                  <span class="output-title">File Content Preview</span>
+                  <button id="btn-download-file" class="btn-action" style="padding:4px 10px; font-size:11px;" disabled>
+                    <i class="fas fa-download"></i> Save / Download File
+                  </button>
+                </div>
+                <div id="file-preview-text" class="output-text" style="height:180px; overflow-y:auto;">
+                  No file loaded. Please upload a .txt file.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ========================================== -->
+      <!-- VIEW 5: THEORY & MATH HUB -->
+      <!-- ========================================== -->
+      <section id="theory-view" class="view-panel">
+        <div class="theory-grid">
+          
+          <div class="theory-sidebar">
+            <button class="theory-nav-item active" data-cipher="caesar">Caesar Cipher</button>
+            <button class="theory-nav-item" data-cipher="mono">Monoalphabetic Substitution</button>
+            <button class="theory-nav-item" data-cipher="playfair">Playfair Cipher</button>
+            <button class="theory-nav-item" data-cipher="hill">Hill Cipher (2x2 Matrix)</button>
+            <button class="theory-nav-item" data-cipher="vigenere">Vigenère Cipher</button>
+            <button class="theory-nav-item" data-cipher="otp">One-Time Pad (OTP)</button>
+            <button class="theory-nav-item" data-cipher="railfence">Rail Fence Cipher</button>
+            <button class="theory-nav-item" data-cipher="columnar">Columnar Transposition</button>
+          </div>
+
+          <div class="cyber-card">
+            <div id="theory-content-body">
+              <!-- Rendered via theoryData.js -->
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- ========================================== -->
+      <!-- VIEW 6: PROJECT REPORT & DELIVERABLES -->
+      <!-- ========================================== -->
+      <section id="report-view" class="view-panel">
+        <div class="cyber-card">
+          <div class="card-header">
+            <h2 class="card-title"><i class="fas fa-file-alt"></i> Mini Project Report Deliverable</h2>
+            <button onclick="window.print()" class="btn-action btn-primary">
+              <i class="fas fa-print"></i> Print / Save PDF
+            </button>
+          </div>
+
+          <div id="report-doc-content" style="line-height:1.8;">
+            <div style="text-align:center; padding:20px 0; border-bottom:1px solid var(--border-subtle); margin-bottom:24px;">
+              <h2 style="font-size:24px; font-weight:800; color:var(--accent-cyan);">DESIGN AND DEVELOPMENT OF A CLASSICAL CRYPTOGRAPHY TOOLKIT</h2>
+              <p style="color:var(--text-muted); font-size:14px; margin-top:8px;">
+                Mini Project Report Submission | Network Security & Cryptography Course
+              </p>
+            </div>
+
+            <h3 style="color:var(--accent-cyan); margin-top:20px;">1. Objectives</h3>
+            <p>
+              To design, develop, and test a menu-driven software application implementing classical substitution and transposition ciphers, providing real-time text encryption, decryption, structural visualizers, and algorithm performance comparisons.
+            </p>
+
+            <h3 style="color:var(--accent-cyan); margin-top:20px;">2. Implemented Algorithms & Modules</h3>
+            <ul style="margin-left:20px; color:var(--text-muted);">
+              <li><strong>Substitution Ciphers:</strong> Caesar Cipher, Monoalphabetic Cipher, Playfair Cipher (5x5 Grid), Hill Cipher (2x2 Matrix), Vigenère Polyalphabetic Cipher, One-Time Pad.</li>
+              <li><strong>Transposition Ciphers:</strong> Rail Fence Cipher, Columnar Transposition Cipher.</li>
+              <li><strong>Utility Modules:</strong> Compare Algorithms Benchmark Engine, Text File Encryption/Decryption, Step-by-Step Structural Visualizers, Educational Theory Hub.</li>
+            </ul>
+
+            <h3 style="color:var(--accent-cyan); margin-top:20px;">3. System Requirements</h3>
+            <p style="color:var(--text-muted);">
+              Client-side web technology stack utilizing standard Web Crypto API and modern DOM rendering engines. Fully operational in any standard HTML5 browser without requiring server-side software installations.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <p>© 2026 Classical Cryptography Toolkit | Built for Network Security Mini Project</p>
+    </footer>
+
+    <!-- TOAST NOTIFICATIONS CONTAINER -->
+    <div id="toast-container" class="toast-container"></div>
+
+  </div>
+
+  <!-- SCRIPT DEPENDENCIES -->
+  <script src="js/ciphers.js"></script>
+  <script src="js/visualizers.js"></script>
+  <script src="js/benchmarks.js"></script>
+  <script src="js/theoryData.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
